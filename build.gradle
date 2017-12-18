@@ -1,0 +1,31 @@
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+        maven {
+            url 'http://dl.bintray.com/jetbrains/intellij-plugin-service'
+        }
+        mavenCentral()
+    }
+    dependencies {
+        classpath "gradle.plugin.org.jetbrains:gradle-intellij-plugin:0.1.10"
+    }
+}
+
+apply plugin: 'org.jetbrains.intellij'
+
+version = "IU-173.3942.27"
+intellij {
+    version 'IU-173.3942.27'
+    pluginName 'vue-gwt-plugin'
+    downloadSources false
+    updateSinceUntilBuild false
+}
+
+group 'com.axellience'
+version '0.0.1'
+
+repositories {
+    mavenCentral()
+}
