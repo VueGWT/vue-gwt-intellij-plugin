@@ -16,6 +16,10 @@ import com.intellij.psi.impl.source.PsiJavaFileImpl;
 import com.intellij.psi.xml.XmlAttribute;
 import com.intellij.psi.xml.XmlAttributeValue;
 
+/**
+ * Inject Java expression in Vue GWT templates
+ * Disabled for now in plugin.xml
+ */
 public class VueCustomInjector implements MultiHostInjector
 {
     @Override
