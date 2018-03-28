@@ -1,19 +1,25 @@
 package com.axellience.vuegwtplugin;
 
-import java.io.File;
-
 import org.jetbrains.annotations.NotNull;
 
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.compiler.CompilerManager;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.fileEditor.FileDocumentManagerAdapter;
+import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.roots.ProjectFileIndex;
+import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
 
 public class VueGWTFileWatcher extends FileDocumentManagerAdapter
 {
+    private static final Logger LOGGER = Logger.getInstance(VueGWTFileWatcher.class);
+    private final Project project;
+
     VueGWTFileWatcher(Project project)
     {
         this.project = project;
@@ -29,38 +35,48 @@ public class VueGWTFileWatcher extends FileDocumentManagerAdapter
         processFile(psiFile.getVirtualFile());
     }
 
-    private void processFile(VirtualFile virtualFile)
+    private void processFile(VirtualFile changedFile)
     {
-        if (!"html".equals(virtualFile.getExtension()))
+        if (!"html".equals(changedFile.getExtension()))
             return;
 
-        String javaClassFileName = virtualFile.getNameWithoutExtension() + ".java";
-        VirtualFile parent = virtualFile.getParent();
+        String javaClassFileName = changedFile.getNameWithoutExtension() + ".java";
+        VirtualFile parent = changedFile.getParent();
         if (parent == null)
             return;
 
-        for (VirtualFile file : parent.getChildren())
+        for (VirtualFile siblingFile : parent.getChildren())
         {
-            if (javaClassFileName.equals(file.getName()))
+            if (javaClassFileName.equals(siblingFile.getName()))
             {
-                saveFileIfNeeded(FileDocumentManager.getInstance(), file);
-                new File(file.getPath()).setLastModified(System.currentTimeMillis());
-                file.refresh(false, false);
+                ApplicationManager
+                    .getApplication()
+                    .invokeLater(() -> compileComponent(changedFile, siblingFile));
                 return;
             }
         }
     }
 
-    private static void saveFileIfNeeded(@NotNull FileDocumentManager fileDocumentManager,
-        @NotNull VirtualFile virtualFile)
+    private void compileComponent(VirtualFile htmlTemplate, VirtualFile javaComponent)
     {
-        // Gets the document to force its saving when the editor is closed.
-        // If it is not cached, no editor was opened to edit it => nothing to be done
-        final Document fileDocument = fileDocumentManager.getCachedDocument(virtualFile);
+        try
+        {
+            ProjectFileIndex projectFileIndex =
+                ProjectRootManager.getInstance(project).getFileIndex();
+            final Module module = projectFileIndex.getModuleForFile(javaComponent);
+            if (module == null)
+                return;
 
-        if (fileDocument != null && fileDocumentManager.isDocumentUnsaved(fileDocument))
-            fileDocumentManager.saveDocument(fileDocument);
+            CompilerManager compilerManager = CompilerManager.getInstance(project);
+            if (!compilerManager.isCompilationActive()
+                && !compilerManager.isExcludedFromCompilation(javaComponent))
+            {
+                compilerManager.compile(new VirtualFile[] { javaComponent, htmlTemplate }, null);
+            }
+        }
+        catch (Exception e)
+        {
+            LOGGER.error(e.getMessage(), e);
+        }
     }
-
-    private final Project project;
 }
