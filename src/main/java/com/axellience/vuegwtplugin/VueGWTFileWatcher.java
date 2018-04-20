@@ -1,7 +1,5 @@
 package com.axellience.vuegwtplugin;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.compiler.CompilerManager;
 import com.intellij.openapi.diagnostic.Logger;
@@ -14,6 +12,7 @@ import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
+import org.jetbrains.annotations.NotNull;
 
 public class VueGWTFileWatcher extends FileDocumentManagerAdapter
 {
@@ -37,27 +36,44 @@ public class VueGWTFileWatcher extends FileDocumentManagerAdapter
 
     private void processFile(VirtualFile changedFile)
     {
-        if (!"html".equals(changedFile.getExtension()))
-            return;
+        if ("html".equals(changedFile.getExtension()))
+            processHtmlFile(changedFile);
+        else if ("java".equals(changedFile.getExtension()))
+            processJavaFile(changedFile);
+    }
 
-        String javaClassFileName = changedFile.getNameWithoutExtension() + ".java";
-        VirtualFile parent = changedFile.getParent();
+    private void processHtmlFile(VirtualFile htmlFile)
+    {
+        String javaClassFileName = htmlFile.getNameWithoutExtension() + ".java";
+        VirtualFile parent = htmlFile.getParent();
         if (parent == null)
             return;
 
-        for (VirtualFile siblingFile : parent.getChildren())
-        {
-            if (javaClassFileName.equals(siblingFile.getName()))
-            {
-                ApplicationManager
-                    .getApplication()
-                    .invokeLater(() -> compileComponent(changedFile, siblingFile));
-                return;
-            }
-        }
+        VirtualFile javaFile = parent.findChild(javaClassFileName);
+        if (javaFile == null)
+            return;
+
+        ApplicationManager.getApplication().invokeLater(() -> compileComponent(javaFile, htmlFile));
     }
 
-    private void compileComponent(VirtualFile htmlTemplate, VirtualFile javaComponent)
+    private void processJavaFile(VirtualFile javaFile)
+    {
+        String htmlTemplateName = javaFile.getNameWithoutExtension() + ".html";
+
+        VirtualFile parent = javaFile.getParent();
+        if (parent == null)
+            return;
+
+        VirtualFile htmlTemplateFile = parent.findChild(htmlTemplateName);
+        if (htmlTemplateFile == null)
+            return;
+
+        ApplicationManager
+            .getApplication()
+            .invokeLater(() -> compileComponent(javaFile, htmlTemplateFile));
+    }
+
+    private void compileComponent(VirtualFile javaComponent, VirtualFile htmlTemplate)
     {
         try
         {
