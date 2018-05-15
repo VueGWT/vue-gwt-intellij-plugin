@@ -36,16 +36,11 @@ public class VueGWTFileWatcher extends FileDocumentManagerAdapter
 
     private void processFile(VirtualFile changedFile)
     {
-        if ("html".equals(changedFile.getExtension()))
-            processHtmlFile(changedFile);
-        else if ("java".equals(changedFile.getExtension()))
-            processJavaFile(changedFile);
-    }
+        if (!"html".equals(changedFile.getExtension()))
+            return;
 
-    private void processHtmlFile(VirtualFile htmlFile)
-    {
-        String javaClassFileName = htmlFile.getNameWithoutExtension() + ".java";
-        VirtualFile parent = htmlFile.getParent();
+        String javaClassFileName = changedFile.getNameWithoutExtension() + ".java";
+        VirtualFile parent = changedFile.getParent();
         if (parent == null)
             return;
 
@@ -53,24 +48,7 @@ public class VueGWTFileWatcher extends FileDocumentManagerAdapter
         if (javaFile == null)
             return;
 
-        ApplicationManager.getApplication().invokeLater(() -> compileComponent(javaFile, htmlFile));
-    }
-
-    private void processJavaFile(VirtualFile javaFile)
-    {
-        String htmlTemplateName = javaFile.getNameWithoutExtension() + ".html";
-
-        VirtualFile parent = javaFile.getParent();
-        if (parent == null)
-            return;
-
-        VirtualFile htmlTemplateFile = parent.findChild(htmlTemplateName);
-        if (htmlTemplateFile == null)
-            return;
-
-        ApplicationManager
-            .getApplication()
-            .invokeLater(() -> compileComponent(javaFile, htmlTemplateFile));
+        ApplicationManager.getApplication().invokeLater(() -> compileComponent(javaFile, changedFile));
     }
 
     private void compileComponent(VirtualFile javaComponent, VirtualFile htmlTemplate)
