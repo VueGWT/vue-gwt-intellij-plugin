@@ -1,10 +1,10 @@
 <idea-plugin>
-	<id>com.axellience.vuegwt</id>
-	<name>Vue GWT</name>
-	<version>0.0.1</version>
-	<vendor email="support@axellience.com" url="http://www.genmymodel.com">Axellience</vendor>
+  <id>com.axellience.vuegwt</id>
+  <name>Vue GWT</name>
+  <version>0.0.1</version>
+  <vendor email="support@axellience.com" url="http://www.genmymodel.com">Axellience</vendor>
 
-	<description><![CDATA[
+  <description><![CDATA[
 		Add support for <a href="https://github.com/Axellience/vue-gwt">Vue GWT</a> in IntelliJ.
 		<br/>
 		When you change your Vue Components templates this plugin will automatically touch the associated Java file.
@@ -32,29 +32,38 @@
 		You are good to go!
 		]]></description>
 
-	<change-notes><![CDATA[
+  <change-notes><![CDATA[
     ]]>
-	</change-notes>
+  </change-notes>
 
-	<!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-	<idea-version since-build="162"/>
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+  <idea-version since-build="162"/>
 
-	<!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
-		 on how to target different products -->
-	<!-- uncomment to enable plugin in all products
-	<depends>com.intellij.modules.lang</depends>
-	-->
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+     on how to target different products -->
+  <!-- uncomment to enable plugin in all products
+  <depends>com.intellij.modules.lang</depends>
+  -->
 
-	<!--<extensions defaultExtensionNs="com.intellij">
-		<multiHostInjector implementation="com.axellience.vuegwtplugin.VueCustomInjector"/>
-	</extensions>-->
+  <!--<extensions defaultExtensionNs="com.intellij">
+    <multiHostInjector implementation="com.axellience.vuegwtplugin.VueCustomInjector"/>
+  </extensions>-->
 
-	<actions></actions>
 
-	<project-components>
-		<component>
-			<implementation-class>com.axellience.vuegwtplugin.VueGWTApplicationComponent
-			</implementation-class>
-		</component>
-	</project-components>
+  <actions>
+    <action id="new-component" class="com.axellience.vuegwtplugin.actions.NewComponentAction">
+      <add-to-group group-id="NewGroup" anchor="first"/>
+    </action>
+  </actions>
+
+  <extensions defaultExtensionNs="com.intellij">
+    <internalFileTemplate name="VueGWT Component"/>
+  </extensions>
+
+  <project-components>
+    <component>
+      <implementation-class>com.axellience.vuegwtplugin.VueGWTApplicationComponent
+      </implementation-class>
+    </component>
+  </project-components>
 </idea-plugin>

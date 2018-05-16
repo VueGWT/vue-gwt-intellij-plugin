@@ -15,9 +15,9 @@ buildscript {
 
 apply plugin: 'org.jetbrains.intellij'
 
-version = "IU-162.2228.15"
+version = "IU-173.4674.33"
 intellij {
-    version 'IU-162.2228.15'
+    version 'IU-173.4674.33'
     pluginName 'vue-gwt-plugin'
     downloadSources false
     updateSinceUntilBuild false
