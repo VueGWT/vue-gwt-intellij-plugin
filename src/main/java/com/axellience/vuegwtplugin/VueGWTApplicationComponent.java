@@ -1,13 +1,12 @@
 package com.axellience.vuegwtplugin;
 
-import static com.intellij.AppTopics.FILE_DOCUMENT_SYNC;
-
-import org.jetbrains.annotations.NotNull;
-
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.project.Project;
 import com.intellij.util.messages.MessageBusConnection;
+import org.jetbrains.annotations.NotNull;
+
+import static com.intellij.AppTopics.FILE_DOCUMENT_SYNC;
 
 public class VueGWTApplicationComponent implements ProjectComponent
 {
@@ -46,6 +45,6 @@ public class VueGWTApplicationComponent implements ProjectComponent
     @Override
     public String getComponentName()
     {
-        return "Vue GWT";
+        return "VueGWT GWT";
     }
 }

@@ -1,10 +1,5 @@
 package com.axellience.vuegwtplugin;
 
-import java.util.Collections;
-import java.util.List;
-
-import org.jetbrains.annotations.NotNull;
-
 import com.intellij.lang.injection.MultiHostInjector;
 import com.intellij.lang.injection.MultiHostRegistrar;
 import com.intellij.lang.java.JavaLanguage;
@@ -15,9 +10,13 @@ import com.intellij.psi.PsiLanguageInjectionHost;
 import com.intellij.psi.impl.source.PsiJavaFileImpl;
 import com.intellij.psi.xml.XmlAttribute;
 import com.intellij.psi.xml.XmlAttributeValue;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
- * Inject Java expression in Vue GWT templates
+ * Inject Java expression in VueGWT GWT templates
  * Disabled for now in plugin.xml
  */
 public class VueCustomInjector implements MultiHostInjector

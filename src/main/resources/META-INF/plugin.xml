@@ -57,4 +57,10 @@
 			</implementation-class>
 		</component>
 	</project-components>
+	<extensions defaultExtensionNs="com.intellij">
+		<fileTypeFactory
+				implementation="com.axellience.vuegwtplugin.language.VueGWTFileTypeFactory"/>
+		<lang.parserDefinition language="VueGWT"
+							   implementationClass="com.axellience.vuegwtplugin.language.VueGWTParserDefinition"/>
+	</extensions>
 </idea-plugin>

@@ -14,6 +14,8 @@ import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Optional;
+
 public class VueGWTFileWatcher extends FileDocumentManagerAdapter
 {
     private static final Logger LOGGER = Logger.getInstance(VueGWTFileWatcher.class);
@@ -36,19 +38,12 @@ public class VueGWTFileWatcher extends FileDocumentManagerAdapter
 
     private void processFile(VirtualFile changedFile)
     {
-        if (!"html".equals(changedFile.getExtension()))
-            return;
+        Optional<VirtualFile> optionalJavaFile =
+            VueGWTPluginUtil.getJavaFileForTemplate(changedFile);
 
-        String javaClassFileName = changedFile.getNameWithoutExtension() + ".java";
-        VirtualFile parent = changedFile.getParent();
-        if (parent == null)
-            return;
-
-        VirtualFile javaFile = parent.findChild(javaClassFileName);
-        if (javaFile == null)
-            return;
-
-        ApplicationManager.getApplication().invokeLater(() -> compileComponent(javaFile, changedFile));
+        optionalJavaFile.ifPresent(javaFile -> ApplicationManager
+            .getApplication()
+            .invokeLater(() -> compileComponent(javaFile, changedFile)));
     }
 
     private void compileComponent(VirtualFile javaComponent, VirtualFile htmlTemplate)
