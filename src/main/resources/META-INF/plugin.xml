@@ -58,6 +58,7 @@
 		</component>
 	</project-components>
 	<extensions defaultExtensionNs="com.intellij">
+		<xml.xmlExtension implementation="com.axellience.vuegwtplugin.VueGWTXmlExtension"/>
 		<fileTypeFactory
 				implementation="com.axellience.vuegwtplugin.language.VueGWTFileTypeFactory"/>
 		<lang.parserDefinition language="VueGWT"
