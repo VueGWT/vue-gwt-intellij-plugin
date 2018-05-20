@@ -58,6 +58,8 @@
 
   <extensions defaultExtensionNs="com.intellij">
     <internalFileTemplate name="VueGWT Component"/>
+    <codeInsight.lineMarkerProvider language="JAVA"
+      implementationClass="com.axellience.vuegwtplugin.markers.VueGWTNavigateMarker"/>
   </extensions>
 
   <project-components>
