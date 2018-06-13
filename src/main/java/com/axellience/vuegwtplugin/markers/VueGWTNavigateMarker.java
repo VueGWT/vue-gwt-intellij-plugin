@@ -1,5 +1,6 @@
 package com.axellience.vuegwtplugin.markers;
 
+import static com.axellience.vuegwtplugin.util.VueGWTPluginUtil.COMPONENT_QUALIFIED_NAME;
 import static com.axellience.vuegwtplugin.util.VueGWTPluginUtil.findHtmlTemplate;
 
 import com.axellience.vuegwtplugin.VueGWTBundle;
@@ -14,10 +15,6 @@ import java.util.Collection;
 import org.jetbrains.annotations.NotNull;
 
 public class VueGWTNavigateMarker extends RelatedItemLineMarkerProvider {
-
-  private static final String COMPONENT_QUALIFIED_NAME =
-      "com.axellience.vuegwt.core.annotations.component.Component";
-
   @Override
   protected void collectNavigationMarkers(@NotNull PsiElement element,
       @NotNull Collection<? super RelatedItemLineMarkerInfo> result) {

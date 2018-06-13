@@ -60,6 +60,11 @@
     <internalFileTemplate name="VueGWT Component"/>
     <codeInsight.lineMarkerProvider language="JAVA"
       implementationClass="com.axellience.vuegwtplugin.markers.VueGWTNavigateMarker"/>
+    <xml.xmlExtension implementation="com.axellience.vuegwtplugin.VueGWTXmlExtension"/>
+    <fileTypeFactory
+      implementation="com.axellience.vuegwtplugin.language.VueGWTFileTypeFactory"/>
+    <lang.parserDefinition language="VueGWT"
+      implementationClass="com.axellience.vuegwtplugin.language.VueGWTParserDefinition"/>
   </extensions>
 
   <project-components>
