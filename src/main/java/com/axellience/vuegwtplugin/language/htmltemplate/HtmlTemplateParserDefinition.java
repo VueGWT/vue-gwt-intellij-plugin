@@ -1,4 +1,4 @@
-package com.axellience.vuegwtplugin.language;
+package com.axellience.vuegwtplugin.language.htmltemplate;
 
 import com.intellij.lang.html.HTMLParserDefinition;
 import com.intellij.psi.FileViewProvider;
@@ -8,10 +8,10 @@ import com.intellij.psi.stubs.PsiFileStub;
 import com.intellij.psi.tree.IFileElementType;
 import com.intellij.psi.tree.IStubFileElementType;
 
-public class VueGWTParserDefinition extends HTMLParserDefinition {
+public class HtmlTemplateParserDefinition extends HTMLParserDefinition {
 
-  public static IFileElementType HTML_FILE =
-      new IStubFileElementType<PsiFileStub<HtmlFileImpl>>(VueGWTLanguage.INSTANCE);
+  private static final IFileElementType HTML_FILE =
+      new IStubFileElementType<PsiFileStub<HtmlFileImpl>>(HtmlTemplateLanguage.INSTANCE);
 
   @Override
   public IFileElementType getFileNodeType() {

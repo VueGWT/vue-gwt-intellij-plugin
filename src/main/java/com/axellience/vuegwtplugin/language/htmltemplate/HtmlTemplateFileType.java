@@ -1,4 +1,4 @@
-package com.axellience.vuegwtplugin.language;
+package com.axellience.vuegwtplugin.language.htmltemplate;
 
 import com.axellience.vuegwtplugin.VueGWTIcons;
 import com.intellij.openapi.fileTypes.LanguageFileType;
@@ -9,13 +9,13 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
-public class VueGWTFileType extends LanguageFileType implements FileTypeIdentifiableByVirtualFile
+public class HtmlTemplateFileType extends LanguageFileType implements FileTypeIdentifiableByVirtualFile
 {
-    public static VueGWTFileType INSTANCE = new VueGWTFileType();
+    public static final HtmlTemplateFileType INSTANCE = new HtmlTemplateFileType();
 
-    VueGWTFileType()
+    HtmlTemplateFileType()
     {
-        super(VueGWTLanguage.INSTANCE);
+        super(HtmlTemplateLanguage.INSTANCE);
     }
 
     @Override
