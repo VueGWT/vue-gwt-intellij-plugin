@@ -1,6 +1,6 @@
 # Vue GWT IntelliJ Plugin
 
-Add support for [Vue GWT](https://github.com/Axellience/vue-gwt) in IntelliJ.
+Add support for [Vue GWT](https://github.com/VueGWT/vue-gwt) in IntelliJ.
 
 When you change your Vue Components templates this plugin will automatically touch the associated Java file.
 
