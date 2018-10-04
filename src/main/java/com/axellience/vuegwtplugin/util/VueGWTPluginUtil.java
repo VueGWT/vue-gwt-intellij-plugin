@@ -1,5 +1,7 @@
 package com.axellience.vuegwtplugin.util;
 
+import static com.intellij.psi.impl.PsiImplUtil.findAttributeValue;
+
 import com.google.common.base.CaseFormat;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiAnnotation;
@@ -7,11 +9,8 @@ import com.intellij.psi.PsiAnnotationMemberValue;
 import com.intellij.psi.PsiClassType;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
-
 import java.util.Arrays;
 import java.util.Optional;
-
-import static com.intellij.psi.impl.PsiImplUtil.findAttributeValue;
 
 public class VueGWTPluginUtil {
 
@@ -25,6 +24,8 @@ public class VueGWTPluginUtil {
   }
 
   public static Optional<PsiFile> findHtmlTemplate(PsiFile javaFile) {
+    //Collection<VirtualFile> htmlFiles = FileTypeIndex.getFiles(HtmlTemplateFileType.INSTANCE, GlobalSearchScope.allScope(project));
+
     PsiDirectory parentDirectory = javaFile.getContainingDirectory();
     if (parentDirectory == null) {
       return Optional.empty();

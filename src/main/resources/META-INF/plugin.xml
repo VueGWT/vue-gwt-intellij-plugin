@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>com.axellience.vuegwt</id>
   <name>Vue GWT</name>
-  <version>0.0.1</version>
+  <version>0.0.3</version>
   <vendor email="support@axellience.com" url="http://www.genmymodel.com">Axellience</vendor>
 
   <description><![CDATA[
@@ -72,6 +72,9 @@
 
     <lang.parserDefinition language="VueGWT-Template"
       implementationClass="com.axellience.vuegwtplugin.language.htmltemplate.HtmlTemplateParserDefinition"/>
+
+    <annotator language="JAVA"
+      implementationClass="com.axellience.vuegwtplugin.annotators.JavaComponentAnnotator"/>
   </extensions>
 
   <project-components>
