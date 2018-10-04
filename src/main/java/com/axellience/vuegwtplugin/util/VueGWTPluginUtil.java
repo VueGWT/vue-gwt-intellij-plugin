@@ -3,7 +3,6 @@ package com.axellience.vuegwtplugin.util;
 import static com.intellij.psi.impl.PsiImplUtil.findAttributeValue;
 
 import com.google.common.base.CaseFormat;
-import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiAnnotation;
 import com.intellij.psi.PsiAnnotationMemberValue;
 import com.intellij.psi.PsiClassType;
@@ -24,8 +23,6 @@ public class VueGWTPluginUtil {
   }
 
   public static Optional<PsiFile> findHtmlTemplate(PsiFile javaFile) {
-    //Collection<VirtualFile> htmlFiles = FileTypeIndex.getFiles(HtmlTemplateFileType.INSTANCE, GlobalSearchScope.allScope(project));
-
     PsiDirectory parentDirectory = javaFile.getContainingDirectory();
     if (parentDirectory == null) {
       return Optional.empty();
@@ -57,22 +54,6 @@ public class VueGWTPluginUtil {
     return Arrays.stream(directory.getFiles())
         .filter(file -> name.equals(file.getName()))
         .findFirst();
-  }
-
-  // ------ OLD ------------------------------------------------------------------------------------
-
-  public static Optional<VirtualFile> getJavaFileForTemplate(VirtualFile templateFile) {
-    if (templateFile == null || !"html".equals(templateFile.getExtension())) {
-      return Optional.empty();
-    }
-
-    String javaClassFileName = templateFile.getNameWithoutExtension() + ".java";
-    VirtualFile parent = templateFile.getParent();
-    if (parent == null) {
-      return Optional.empty();
-    }
-
-    return Optional.ofNullable(parent.findChild(javaClassFileName));
   }
 
   public static String componentToTagName(PsiClassType componentClass) {

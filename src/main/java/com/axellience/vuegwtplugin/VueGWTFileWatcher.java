@@ -13,64 +13,82 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public class VueGWTFileWatcher extends FileDocumentManagerAdapter
-{
-    private static final Logger LOGGER = Logger.getInstance(VueGWTFileWatcher.class);
-    private final Project project;
+public class VueGWTFileWatcher extends FileDocumentManagerAdapter {
 
-    VueGWTFileWatcher(Project project)
-    {
-        this.project = project;
+  private static final Logger LOGGER = Logger.getInstance(VueGWTFileWatcher.class);
+  private final Project project;
+
+  VueGWTFileWatcher(Project project) {
+    this.project = project;
+  }
+
+  @Override
+  public void beforeDocumentSaving(@NotNull Document document) {
+    PsiFile psiFile = PsiDocumentManager.getInstance(project).getPsiFile(document);
+    if (psiFile == null) {
+      return;
     }
 
-    @Override
-    public void beforeDocumentSaving(@NotNull Document document)
-    {
-        PsiFile psiFile = PsiDocumentManager.getInstance(project).getPsiFile(document);
-        if (psiFile == null)
-            return;
+    processFile(psiFile.getVirtualFile());
+  }
 
-        processFile(psiFile.getVirtualFile());
+  private void processFile(VirtualFile changedFile) {
+    if ("html".equals(changedFile.getExtension())) {
+      processHtmlFile(changedFile);
+    } else if ("java".equals(changedFile.getExtension())) {
+      processJavaFile(changedFile);
+    }
+  }
+
+  private void processHtmlFile(VirtualFile htmlFile) {
+    VirtualFile javaFile = getSibling(htmlFile, htmlFile.getNameWithoutExtension() + ".java");
+    if (javaFile == null) {
+      return;
     }
 
-    private void processFile(VirtualFile changedFile)
-    {
-        if (!"html".equals(changedFile.getExtension()))
-            return;
+    ApplicationManager.getApplication().invokeLater(() -> compileComponent(javaFile, htmlFile));
+  }
 
-        String javaClassFileName = changedFile.getNameWithoutExtension() + ".java";
-        VirtualFile parent = changedFile.getParent();
-        if (parent == null)
-            return;
+  private void processJavaFile(VirtualFile javaFile) {
+    VirtualFile htmlFile = getSibling(javaFile, javaFile.getNameWithoutExtension() + ".html");
+    if (htmlFile == null)
+      return;
 
-        VirtualFile javaFile = parent.findChild(javaClassFileName);
-        if (javaFile == null)
-            return;
+    ApplicationManager.getApplication().invokeLater(() -> compileComponent(javaFile, htmlFile));
+  }
 
-        ApplicationManager.getApplication().invokeLater(() -> compileComponent(javaFile, changedFile));
+  private void compileComponent(VirtualFile javaComponent, VirtualFile htmlTemplate) {
+    try {
+      ProjectFileIndex projectFileIndex =
+          ProjectRootManager.getInstance(project).getFileIndex();
+      final Module module = projectFileIndex.getModuleForFile(javaComponent);
+      if (module == null) {
+        return;
+      }
+
+      CompilerManager compilerManager = CompilerManager.getInstance(project);
+      if (!compilerManager.isCompilationActive()
+          && !compilerManager.isExcludedFromCompilation(javaComponent)) {
+        compilerManager.compile(new VirtualFile[]{javaComponent, htmlTemplate}, null);
+      }
+    } catch (Exception e) {
+      LOGGER.error(e.getMessage(), e);
+    }
+  }
+
+  @Nullable
+  private VirtualFile getSibling(VirtualFile file, String siblingName) {
+    VirtualFile parent = file.getParent();
+    if (parent == null) {
+      return null;
     }
 
-    private void compileComponent(VirtualFile javaComponent, VirtualFile htmlTemplate)
-    {
-        try
-        {
-            ProjectFileIndex projectFileIndex =
-                ProjectRootManager.getInstance(project).getFileIndex();
-            final Module module = projectFileIndex.getModuleForFile(javaComponent);
-            if (module == null)
-                return;
-
-            CompilerManager compilerManager = CompilerManager.getInstance(project);
-            if (!compilerManager.isCompilationActive()
-                && !compilerManager.isExcludedFromCompilation(javaComponent))
-            {
-                compilerManager.compile(new VirtualFile[] { javaComponent, htmlTemplate }, null);
-            }
-        }
-        catch (Exception e)
-        {
-            LOGGER.error(e.getMessage(), e);
-        }
+    VirtualFile siblingFile = parent.findChild(siblingName);
+    if (siblingFile == null) {
+      return null;
     }
+    return siblingFile;
+  }
 }
