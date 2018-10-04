@@ -6,7 +6,7 @@ import com.intellij.openapi.util.IconLoader;
 
 public class VueGWTIcons
 {
-    public static final Icon VUE = load("/icons/vue.png");
+    public static final Icon VUE = load("/icons/vue-gwt.png");
 
     private static Icon load(String path)
     {
