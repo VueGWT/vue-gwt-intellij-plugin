@@ -5,32 +5,33 @@
   <vendor email="support@axellience.com" url="http://www.genmymodel.com">Axellience</vendor>
 
   <description><![CDATA[
-		Add support for <a href="https://github.com/Axellience/vue-gwt">Vue GWT</a> in IntelliJ.
-		<br/>
-		When you change your Vue Components templates this plugin will automatically touch the associated Java file.
-		<br/><br/>
+    Add support for <a href="https://github.com/Axellience/vue-gwt">Vue GWT</a> in IntelliJ.
+    <br/>
+    When you change your Vue Components templates this plugin will automatically touch the associated Java file.
+    <br/><br/>
 
-		By default IntelliJ doesn't support automatic annotation processing on Java file change when the app is running.
-		<br/>
-		After installing this plugin, follow these steps to enable it:
-		<br/><br/>
+    By default IntelliJ doesn't support automatic annotation processing on Java file change when the app is running.
+    <br/>
+    After installing this plugin, follow these steps to enable it:
+    <br/><br/>
 
-		Go to
-		<b>File > Settings > Build, Execution, Deployment > Compiler</b> and enable "Make project automatically"
-		<br/><br/>
+    Go to
+    <b>File > Settings > Build, Execution, Deployment >
+      Compiler</b> and enable "Make project automatically"
+    <br/><br/>
 
-		Open the Action window :
-		<ul>
-			<li>Linux : <b>CTRL+SHIFT+A</b></li>
-			<li>MacOS : <b>SHIFT+COMMAND+A</b></li>
-			<li>Windows : <b>CTRL+ALT+SHIFT+/</b></li>
-		</ul>
+    Open the Action window :
+    <ul>
+      <li>Linux : <b>CTRL+SHIFT+A</b></li>
+      <li>MacOS : <b>SHIFT+COMMAND+A</b></li>
+      <li>Windows : <b>CTRL+ALT+SHIFT+/</b></li>
+    </ul>
 
-		Enter <b>Registry...</b> and enable <b>compiler.automake.allow.when.app.running</b>.
-		<br/><br/>
+    Enter <b>Registry...</b> and enable <b>compiler.automake.allow.when.app.running</b>.
+    <br/><br/>
 
-		You are good to go!
-		]]></description>
+    You are good to go!
+    ]]></description>
 
   <change-notes><![CDATA[
     ]]>
@@ -75,6 +76,9 @@
 
     <annotator language="JAVA"
       implementationClass="com.axellience.vuegwtplugin.annotators.JavaComponentAnnotator"/>
+
+    <lang.syntaxHighlighterFactory language="VueGWT-Template"
+      implementationClass="com.axellience.vuegwtplugin.language.htmltemplate.HtmlTemplateHighlightingLexerFactory"/>
   </extensions>
 
   <project-components>
