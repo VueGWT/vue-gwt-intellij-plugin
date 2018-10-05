@@ -1,41 +1,47 @@
 <idea-plugin>
   <id>com.axellience.vuegwt</id>
   <name>Vue GWT</name>
-  <version>0.0.3</version>
+  <version>0.1.0</version>
   <vendor email="support@axellience.com" url="http://www.genmymodel.com">Axellience</vendor>
 
   <description><![CDATA[
-    Add support for <a href="https://github.com/Axellience/vue-gwt">Vue GWT</a> in IntelliJ.
+    Add support for <a href="https://github.com/VueGWT/vue-gwt">Vue GWT</a> in IntelliJ.
     <br/>
-    When you change your Vue Components templates this plugin will automatically touch the associated Java file.
-    <br/><br/>
-
-    By default IntelliJ doesn't support automatic annotation processing on Java file change when the app is running.
     <br/>
-    After installing this plugin, follow these steps to enable it:
-    <br/><br/>
 
-    Go to
-    <b>File > Settings > Build, Execution, Deployment >
-      Compiler</b> and enable "Make project automatically"
-    <br/><br/>
-
-    Open the Action window :
+    <strong>Features:</strong>
     <ul>
-      <li>Linux : <b>CTRL+SHIFT+A</b></li>
-      <li>MacOS : <b>SHIFT+COMMAND+A</b></li>
-      <li>Windows : <b>CTRL+ALT+SHIFT+/</b></li>
+      <li>Run the Annotation Processor when a template or a component class is changed</li>
+      <li>Allow navigation between components in the template</li>
+      <li>Allow 2-way navigation between the template and the Java class</li>
+      <li>Allow one intention to create the template for a Vue Component class</li>
+      <li>Add support for scoped SCSS in templates</li>
+      <li>Remove warnings about vue-gwt namespace in templates</li>
     </ul>
-
-    Enter <b>Registry...</b> and enable <b>compiler.automake.allow.when.app.running</b>.
-    <br/><br/>
-
-    You are good to go!
     ]]></description>
 
   <change-notes><![CDATA[
-    ]]>
-  </change-notes>
+  <strong>v0.1.0</strong>
+  <p>To upgrade to this version it is recommended to disable IntelliJ auto compilation feature as it is not needed anymore</p>
+  <ul>
+    <li>Change template recompiling handling to run the Java compiler instead of just touching the Java file</li>
+    <li>Add support for navigation between components</li>
+    <li>Add support for 2-way navigation between the template and the Java class</li>
+    <li>Add support to create the template from the Java class</li>
+    <li>Add support for scoped SCSS in templates</li>
+    <li>Add support to remove warnings about vue-gwt namespace in templates</li>
+  </ul>
+  <br/>
+  <strong>v0.0.2</strong>
+  <ul>
+    <li>Fix an issue with template recompiling</li>
+  </ul>
+  <br/>
+  <strong>v0.0.1</strong>
+  <ul>
+    <li>Initial Release</li>
+  </ul>
+  ]]></change-notes>
 
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
   <idea-version since-build="162"/>
