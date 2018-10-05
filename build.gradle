@@ -8,23 +8,23 @@ buildscript {
         }
         mavenCentral()
     }
-    dependencies {
-        classpath "gradle.plugin.org.jetbrains:gradle-intellij-plugin:0.1.10"
-    }
+}
+
+plugins {
+    id "org.jetbrains.intellij" version "0.3.11"
 }
 
 apply plugin: 'org.jetbrains.intellij'
 
-version = "IU-162.2228.15"
 intellij {
-    version 'IU-162.2228.15'
+    version 'IU-173.4674.33'
     pluginName 'vue-gwt-plugin'
     downloadSources false
     updateSinceUntilBuild false
 }
 
 group 'com.axellience'
-version '0.0.2'
+version '0.1.0'
 
 repositories {
     mavenCentral()

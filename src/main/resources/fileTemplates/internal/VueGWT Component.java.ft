@@ -1,0 +1,9 @@
+#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME};#end
+
+import com.axellience.vuegwt.core.annotations.component.Component;
+import com.axellience.vuegwt.core.client.component.IsVueComponent;
+
+@Component
+public class ${NAME} implements IsVueComponent{
+
+    }
