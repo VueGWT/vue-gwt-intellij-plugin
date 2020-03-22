@@ -3,11 +3,14 @@ package com.axellience.vuegwtplugin.util;
 import static com.intellij.psi.impl.PsiImplUtil.findAttributeValue;
 
 import com.google.common.base.CaseFormat;
+import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiAnnotation;
 import com.intellij.psi.PsiAnnotationMemberValue;
 import com.intellij.psi.PsiClassType;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiJavaFile;
+import com.intellij.psi.PsiManager;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -32,18 +35,32 @@ public class VueGWTPluginUtil {
     return findFileWithName(parentDirectory, templateName);
   }
 
-  public static String getTemplateNameFrom(PsiFile javaFile) {
-    return javaFile.getName().replaceAll("(.*)\\.java", "$1.html");
-  }
-
-  public static Optional<PsiFile> findJavaFromTemplate(PsiFile templateFile) {
+  public static Optional<PsiJavaFile> findJavaFromTemplate(PsiFile templateFile) {
     PsiDirectory parentDirectory = templateFile.getContainingDirectory();
     if (parentDirectory == null) {
       return Optional.empty();
     }
 
     String javaName = getJavaNameFromTemplate(templateFile);
-    return findFileWithName(parentDirectory, javaName);
+    Optional<PsiFile> optionalJavaFile = findFileWithName(parentDirectory, javaName);
+
+    if (!optionalJavaFile.isPresent()) {
+      return Optional.empty();
+    }
+
+    // Find the project for the current file
+    Project project = templateFile.getProject();
+    PsiFile file = PsiManager.getInstance(project)
+        .findFile(optionalJavaFile.get().getVirtualFile());
+    if (!(file instanceof PsiJavaFile)) {
+      return Optional.empty();
+    }
+
+    return Optional.of((PsiJavaFile) file);
+  }
+
+  public static String getTemplateNameFrom(PsiFile javaFile) {
+    return javaFile.getName().replaceAll("(.*)\\.java", "$1.html");
   }
 
   public static String getJavaNameFromTemplate(PsiFile templateFile) {

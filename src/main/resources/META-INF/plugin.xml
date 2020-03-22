@@ -74,6 +74,8 @@
 
 
     <xml.xmlExtension implementation="com.axellience.vuegwtplugin.VueGWTXmlExtension"/>
+    <xml.tagNameProvider implementation="com.axellience.vuegwtplugin.tags.VueGWTTagProvider"/>
+    
     <fileTypeFactory
       implementation="com.axellience.vuegwtplugin.language.VueGWTFileTypeFactory"/>
 
