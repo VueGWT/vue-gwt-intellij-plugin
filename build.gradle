@@ -11,16 +11,17 @@ buildscript {
 }
 
 plugins {
-    id "org.jetbrains.intellij" version "0.3.11"
+    id "org.jetbrains.intellij" version "0.4.10"
 }
 
 apply plugin: 'org.jetbrains.intellij'
 
 intellij {
-    version 'IU-173.4674.33'
+    version 'IU-LATEST-EAP-SNAPSHOT'
     pluginName 'vue-gwt-plugin'
-    downloadSources false
+    downloadSources true
     updateSinceUntilBuild false
+    plugins = ['java']
 }
 
 group 'com.axellience'
