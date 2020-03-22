@@ -32,7 +32,7 @@ public class TemplateToJavaMarker extends RelatedItemLineMarkerProvider {
 
     PsiFile templateFile = tag.getContainingFile();
     findJavaFromTemplate(templateFile)
-        .ifPresent(javaFile -> addMarker(element, result, javaFile));
+        .ifPresent(javaFile -> addMarker(element.getFirstChild(), result, javaFile));
   }
 
   private boolean isVueGwtNamespace(HtmlTag tag) {
@@ -40,7 +40,7 @@ public class TemplateToJavaMarker extends RelatedItemLineMarkerProvider {
   }
 
   private void addMarker(PsiElement element,
-      Collection<? super RelatedItemLineMarkerInfo> result,
+      Collection<? super RelatedItemLineMarkerInfo<PsiElement>> result,
       PsiFile javaFile) {
     result.add(NavigationGutterIconBuilder.create(VueGWTIcons.VUE)
         .setTarget(javaFile)

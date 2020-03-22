@@ -30,11 +30,12 @@ public class JavaToTemplateMarker extends RelatedItemLineMarkerProvider {
 
     PsiFile javaFile = element.getContainingFile();
     findHtmlTemplate(javaFile)
-        .ifPresent(templateFile -> addTemplateNavigatorMarker(element, result, templateFile));
+        .ifPresent(templateFile -> addTemplateNavigatorMarker(element.getFirstChild(), result,
+            templateFile));
   }
 
   private void addTemplateNavigatorMarker(PsiElement element,
-      Collection<? super RelatedItemLineMarkerInfo> result,
+      Collection<? super RelatedItemLineMarkerInfo<PsiElement>> result,
       PsiFile templateFile) {
     result.add(NavigationGutterIconBuilder.create(VueGWTIcons.VUE)
         .setTarget(templateFile)
