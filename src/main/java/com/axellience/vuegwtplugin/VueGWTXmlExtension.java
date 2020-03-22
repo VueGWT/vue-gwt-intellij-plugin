@@ -22,16 +22,24 @@ import com.intellij.psi.impl.source.xml.SchemaPrefix;
 import com.intellij.psi.impl.source.xml.TagNameReference;
 import com.intellij.psi.xml.XmlAttribute;
 import com.intellij.psi.xml.XmlDocument;
+import com.intellij.psi.xml.XmlFile;
 import com.intellij.psi.xml.XmlTag;
 import com.intellij.xml.HtmlXmlExtension;
+import java.util.List;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class VueGWTXmlExtension extends HtmlXmlExtension {
 
   @Override
   public boolean isAvailable(PsiFile psiFile) {
-    return psiFile.getLanguage() == HtmlTemplateLanguage.INSTANCE;
+    if (psiFile.getLanguage() != HtmlTemplateLanguage.INSTANCE) {
+      return false;
+    }
+
+    Optional<PsiJavaFile> optionalPsiJavaFile = getJavaFileForTemplate(psiFile);
+    return optionalPsiJavaFile.isPresent();
   }
 
   @Override
@@ -78,21 +86,12 @@ public class VueGWTXmlExtension extends HtmlXmlExtension {
   public TagNameReference createTagNameReference(ASTNode astNode, boolean b) {
     PsiFile templateFile = astNode.getTreeParent().getPsi().getContainingFile();
 
-    // Get the Java file for the template
-    Optional<PsiFile> optionalJavaFile = VueGWTPluginUtil.findJavaFromTemplate(templateFile);
-    if (!optionalJavaFile.isPresent()) {
+    Optional<PsiJavaFile> optionalPsiJavaFile = getJavaFileForTemplate(templateFile);
+    if (!optionalPsiJavaFile.isPresent()) {
       return super.createTagNameReference(astNode, b);
     }
 
-    // Find the project for the current file
-    Project project = astNode.getPsi().getProject();
-    PsiFile file = PsiManager.getInstance(project)
-        .findFile(optionalJavaFile.get().getVirtualFile());
-    if (!(file instanceof PsiJavaFile)) {
-      return super.createTagNameReference(astNode, b);
-    }
-
-    PsiJavaFile psiJavaFile = (PsiJavaFile) file;
+    PsiJavaFile psiJavaFile = optionalPsiJavaFile.get();
     String tagName = astNode.getText(); // Tag name of the current element
 
     return getComponentAnnotationFromJavaFile(psiJavaFile)
@@ -167,5 +166,28 @@ public class VueGWTXmlExtension extends HtmlXmlExtension {
     }
 
     return findHtmlTemplate(componentClass.getContainingFile());
+  }
+
+  @Override
+  public boolean isSelfClosingTagAllowed(@NotNull XmlTag tag) {
+    return true;
+  }
+
+  private Optional<PsiJavaFile> getJavaFileForTemplate(PsiFile templateFile) {
+    // Get the Java file for the template
+    Optional<PsiFile> optionalJavaFile = VueGWTPluginUtil.findJavaFromTemplate(templateFile);
+    if (!optionalJavaFile.isPresent()) {
+      return Optional.empty();
+    }
+
+    // Find the project for the current file
+    Project project = templateFile.getProject();
+    PsiFile file = PsiManager.getInstance(project)
+        .findFile(optionalJavaFile.get().getVirtualFile());
+    if (!(file instanceof PsiJavaFile)) {
+      return Optional.empty();
+    }
+
+    return Optional.of((PsiJavaFile) file);
   }
 }
