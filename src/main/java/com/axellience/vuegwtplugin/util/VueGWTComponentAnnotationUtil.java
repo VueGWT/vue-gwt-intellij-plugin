@@ -22,11 +22,21 @@ public class VueGWTComponentAnnotationUtil {
   public static Optional<PsiAnnotation> getComponentAnnotationFromJavaFile(
       PsiJavaFile psiJavaFile) {
     for (PsiClass psiClass : psiJavaFile.getClasses()) {
-      PsiAnnotation[] annotations = psiClass.getAnnotations();
-      for (PsiAnnotation annotation : annotations) {
-        if (COMPONENT_QUALIFIED_NAME.equals(annotation.getQualifiedName())) {
-          return Optional.of(annotation);
-        }
+      Optional<PsiAnnotation> annotation = getComponentAnnotationFromPsiClass(psiClass);
+      if (annotation.isPresent()) {
+        return annotation;
+      }
+    }
+
+    return Optional.empty();
+  }
+
+  public static Optional<PsiAnnotation> getComponentAnnotationFromPsiClass(
+      PsiClass psiClass) {
+    PsiAnnotation[] annotations = psiClass.getAnnotations();
+    for (PsiAnnotation annotation : annotations) {
+      if (COMPONENT_QUALIFIED_NAME.equals(annotation.getQualifiedName())) {
+        return Optional.of(annotation);
       }
     }
 
@@ -46,6 +56,18 @@ public class VueGWTComponentAnnotationUtil {
         .map(PsiClassType::resolve)
         .map(PsiClass::getContainingFile)
         .flatMap(VueGWTPluginUtil::findHtmlTemplate);
+  }
+
+  public static Optional<PsiClassType> getImportedComponentClassTypeFromComponentAnnotation(
+      PsiAnnotation componentAnnotation,
+      String tagName) {
+
+    Set<PsiClassType> importedComponentsClassType = getImportedComponentsClassTypeFromComponentAnnotation(
+        componentAnnotation);
+
+    return importedComponentsClassType.stream()
+        .filter(psiClassType -> VueGWTPluginUtil.componentToTagName(psiClassType).equals(tagName))
+        .findFirst();
   }
 
   public static Set<PsiClassType> getImportedComponentsClassTypeFromComponentAnnotation(
