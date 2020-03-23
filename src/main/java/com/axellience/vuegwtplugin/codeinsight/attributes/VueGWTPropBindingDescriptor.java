@@ -9,21 +9,27 @@ import com.intellij.xml.impl.BasicXmlAttributeDescriptor;
 import javax.swing.Icon;
 import org.jetbrains.annotations.Nullable;
 
-public class VueGWTAttributeDescriptor extends BasicXmlAttributeDescriptor implements
+public class VueGWTPropBindingDescriptor extends BasicXmlAttributeDescriptor implements
     PsiPresentableMetaData {
 
   private final PsiField field;
   private final String name;
   private boolean isRequired;
 
-  public VueGWTAttributeDescriptor(PsiField field) {
+  public VueGWTPropBindingDescriptor(PsiField field) {
     this(field, field.getName());
   }
 
-  public VueGWTAttributeDescriptor(PsiField field, String name) {
+  public VueGWTPropBindingDescriptor(PsiField field, String name) {
     this.field = field;
     this.name = name;
     this.isRequired = false;
+  }
+
+  public boolean isAttributePropBinding(String attributeName) {
+    return getName().equals(attributeName) ||
+        (":" + getName()).equals(attributeName) ||
+        ("v-bind:" + getName()).equals(attributeName);
   }
 
   @Override

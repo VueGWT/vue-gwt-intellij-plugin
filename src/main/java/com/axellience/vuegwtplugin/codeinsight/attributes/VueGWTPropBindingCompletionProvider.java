@@ -15,7 +15,7 @@ import com.intellij.util.ProcessingContext;
 import kotlin.Pair;
 import org.jetbrains.annotations.NotNull;
 
-public class VueGWTCompletionProvider extends CompletionProvider<CompletionParameters> {
+public class VueGWTPropBindingCompletionProvider extends CompletionProvider<CompletionParameters> {
 
   @Override
   protected void addCompletions(@NotNull CompletionParameters parameters,

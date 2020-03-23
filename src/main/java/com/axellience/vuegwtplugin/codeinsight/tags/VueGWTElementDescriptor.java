@@ -1,6 +1,8 @@
 package com.axellience.vuegwtplugin.codeinsight.tags;
 
-import com.axellience.vuegwtplugin.codeinsight.attributes.VueGWTAttributeDescriptor;
+import static com.axellience.vuegwtplugin.util.VueGWTPropAnnotationUtil.getComponentAnnotationFromPsiField;
+
+import com.axellience.vuegwtplugin.codeinsight.attributes.VueGWTPropBindingDescriptor;
 import com.axellience.vuegwtplugin.util.VueGWTPluginUtil;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
@@ -41,14 +43,11 @@ public class VueGWTElementDescriptor implements XmlElementDescriptor {
   @Override
   public XmlAttributeDescriptor getAttributeDescriptor(String attributeName,
       @Nullable XmlTag context) {
-    return Arrays.stream(componentClass.getAllFields())
-        .filter(
-            field -> field.getName().equals(attributeName) ||
-                (":" + field.getName()).equals(attributeName) ||
-                ("v-bind:" + field.getName()).equals(attributeName)
-        )
+    return getProps()
+        .stream()
+        .filter(prop -> prop.isAttributePropBinding(attributeName))
         .findFirst()
-        .map(field -> (XmlAttributeDescriptor) new VueGWTAttributeDescriptor(field))
+        .map(XmlAttributeDescriptor.class::cast)
         .orElse(HtmlNSDescriptorImpl.getCommonAttributeDescriptor(attributeName, context));
   }
 
@@ -58,9 +57,10 @@ public class VueGWTElementDescriptor implements XmlElementDescriptor {
     return getAttributeDescriptor(attribute.getName(), attribute.getParent());
   }
 
-  public List<VueGWTAttributeDescriptor> getProps() {
+  public List<VueGWTPropBindingDescriptor> getProps() {
     return Arrays.stream(componentClass.getAllFields())
-        .map(VueGWTAttributeDescriptor::new)
+        .filter(field -> getComponentAnnotationFromPsiField(field).isPresent())
+        .map(VueGWTPropBindingDescriptor::new)
         .collect(Collectors.toList());
   }
 

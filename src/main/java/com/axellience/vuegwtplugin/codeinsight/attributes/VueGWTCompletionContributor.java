@@ -11,6 +11,6 @@ public class VueGWTCompletionContributor extends CompletionContributor {
 
   public VueGWTCompletionContributor() {
     this.extend(CompletionType.BASIC, psiElement(XmlTokenType.XML_NAME).withParent(xmlAttribute()),
-        new VueGWTCompletionProvider());
+        new VueGWTPropBindingCompletionProvider());
   }
 }
