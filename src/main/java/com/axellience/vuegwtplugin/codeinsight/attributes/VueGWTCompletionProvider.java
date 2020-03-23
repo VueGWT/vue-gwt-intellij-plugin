@@ -5,6 +5,7 @@ import com.axellience.vuegwtplugin.codeinsight.tags.VueGWTElementDescriptor;
 import com.intellij.codeInsight.completion.CompletionParameters;
 import com.intellij.codeInsight.completion.CompletionProvider;
 import com.intellij.codeInsight.completion.CompletionResultSet;
+import com.intellij.codeInsight.completion.PrioritizedLookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiField;
@@ -30,6 +31,10 @@ public class VueGWTCompletionProvider extends CompletionProvider<CompletionParam
     }
 
     String prefix = result.getPrefixMatcher().getPrefix();
+    if (!prefix.startsWith(":") && !prefix.startsWith("v-bind:")) {
+      return;
+    }
+
     CompletionResultSet newResults =
         prefix.equals("v-bind:") ? result.withPrefixMatcher("") : result;
     String lookupItemPrefix = prefix.startsWith(":") ? ":" : "";
@@ -39,15 +44,17 @@ public class VueGWTCompletionProvider extends CompletionProvider<CompletionParam
         .forEach(prop -> {
           PsiField field = (PsiField) prop.getDeclaration();
           newResults.addElement(
-              LookupElementBuilder.create(
-                  new Pair<>(
-                      lookupItemPrefix + field.getName(),
-                      SmartPointerManager
-                          .getInstance(field.getProject())
-                          .createSmartPsiElementPointer(field)),
-                  lookupItemPrefix + field.getName()
-              )
-              .withIcon(VueGWTIcons.VUE)
+              PrioritizedLookupElement.withPriority(
+                  LookupElementBuilder.create(
+                      new Pair<>(
+                          lookupItemPrefix + field.getName(),
+                          SmartPointerManager
+                              .getInstance(field.getProject())
+                              .createSmartPsiElementPointer(field)),
+                      lookupItemPrefix + field.getName()
+                  )
+                      .withIcon(VueGWTIcons.VUE),
+                  10)
           );
         });
   }
