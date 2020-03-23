@@ -6,6 +6,7 @@ import com.google.common.base.CaseFormat;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiAnnotation;
 import com.intellij.psi.PsiAnnotationMemberValue;
+import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiClassType;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
@@ -18,6 +19,9 @@ public class VueGWTPluginUtil {
 
   public static final String COMPONENT_QUALIFIED_NAME =
       "com.axellience.vuegwt.core.annotations.component.Component";
+
+  public static final String PROP_QUALIFIED_NAME =
+      "com.axellience.vuegwt.core.annotations.component.Prop";
 
   public static final String VUE_GWT_NAMESPACE = "http://axellience.com/vue-gwt";
 
@@ -36,7 +40,7 @@ public class VueGWTPluginUtil {
   }
 
   public static Optional<PsiJavaFile> findJavaFromTemplate(PsiFile templateFile) {
-    PsiDirectory parentDirectory = templateFile.getContainingDirectory();
+    PsiDirectory parentDirectory = templateFile.getOriginalFile().getContainingDirectory();
     if (parentDirectory == null) {
       return Optional.empty();
     }
@@ -57,6 +61,19 @@ public class VueGWTPluginUtil {
     }
 
     return Optional.of((PsiJavaFile) file);
+  }
+
+  public static Optional<PsiClass> getComponentClassFromFile(PsiJavaFile psiJavaFile) {
+    for (PsiClass psiClass : psiJavaFile.getClasses()) {
+      PsiAnnotation[] annotations = psiClass.getAnnotations();
+      for (PsiAnnotation annotation : annotations) {
+        if (COMPONENT_QUALIFIED_NAME.equals(annotation.getQualifiedName())) {
+          return Optional.of(psiClass);
+        }
+      }
+    }
+
+    return Optional.empty();
   }
 
   public static String getTemplateNameFrom(PsiFile javaFile) {
@@ -80,6 +97,21 @@ public class VueGWTPluginUtil {
     if (componentAnnotation != null) {
       PsiAnnotationMemberValue name = findAttributeValue(componentAnnotation, "name");
 
+      if (name != null && !"".equals(name.getText())) {
+        return name.getText();
+      }
+    }
+
+    String componentClassName = componentClass.getName().replaceAll("Component$", "");
+    return CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_HYPHEN, componentClassName).toLowerCase();
+  }
+
+  public static String componentToTagName(PsiClass componentClass) {
+    Optional<PsiAnnotation> componentAnnotation = VueGWTComponentAnnotationUtil
+        .getComponentAnnotationFromPsiClass(componentClass);
+
+    if (componentAnnotation.isPresent()) {
+      PsiAnnotationMemberValue name = findAttributeValue(componentAnnotation.get(), "name");
       if (name != null && !"".equals(name.getText())) {
         return name.getText();
       }

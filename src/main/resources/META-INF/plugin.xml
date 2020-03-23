@@ -74,8 +74,9 @@
 
 
     <xml.xmlExtension implementation="com.axellience.vuegwtplugin.VueGWTXmlExtension"/>
-    <xml.tagNameProvider implementation="com.axellience.vuegwtplugin.tags.VueGWTTagProvider"/>
-    
+    <xml.tagNameProvider implementation="com.axellience.vuegwtplugin.codeinsight.tags.VueGWTTagProvider"/>
+    <xml.elementDescriptorProvider implementation="com.axellience.vuegwtplugin.codeinsight.tags.VueGWTTagProvider"/>
+
     <fileTypeFactory
       implementation="com.axellience.vuegwtplugin.language.VueGWTFileTypeFactory"/>
 
@@ -87,6 +88,11 @@
 
     <lang.syntaxHighlighterFactory language="VueGWT-Template"
       implementationClass="com.axellience.vuegwtplugin.language.htmltemplate.HtmlTemplateHighlightingLexerFactory"/>
+
+    <completion.contributor
+      language="any"
+      id="VueGWTCompletionContributor"
+      implementationClass="com.axellience.vuegwtplugin.codeinsight.attributes.VueGWTCompletionContributor"/>
   </extensions>
 
   <project-components>
