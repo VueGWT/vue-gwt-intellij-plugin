@@ -63,19 +63,6 @@ public class VueGWTPluginUtil {
     return Optional.of((PsiJavaFile) file);
   }
 
-  public static Optional<PsiClass> getComponentClassFromFile(PsiJavaFile psiJavaFile) {
-    for (PsiClass psiClass : psiJavaFile.getClasses()) {
-      PsiAnnotation[] annotations = psiClass.getAnnotations();
-      for (PsiAnnotation annotation : annotations) {
-        if (COMPONENT_QUALIFIED_NAME.equals(annotation.getQualifiedName())) {
-          return Optional.of(psiClass);
-        }
-      }
-    }
-
-    return Optional.empty();
-  }
-
   public static String getTemplateNameFrom(PsiFile javaFile) {
     return javaFile.getName().replaceAll("(.*)\\.java", "$1.html");
   }

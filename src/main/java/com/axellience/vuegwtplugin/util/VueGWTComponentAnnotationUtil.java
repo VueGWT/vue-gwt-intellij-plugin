@@ -43,21 +43,6 @@ public class VueGWTComponentAnnotationUtil {
     return Optional.empty();
   }
 
-  public static Optional<PsiFile> getImportedComponentTemplateFromAnnotationComponent(
-      PsiAnnotation componentAnnotation,
-      String tagName) {
-
-    Set<PsiClassType> importedComponentsClassType = getImportedComponentsClassTypeFromComponentAnnotation(
-        componentAnnotation);
-
-    return importedComponentsClassType.stream()
-        .filter(psiClassType -> VueGWTPluginUtil.componentToTagName(psiClassType).equals(tagName))
-        .findFirst()
-        .map(PsiClassType::resolve)
-        .map(PsiClass::getContainingFile)
-        .flatMap(VueGWTPluginUtil::findHtmlTemplate);
-  }
-
   public static Optional<PsiClassType> getImportedComponentClassTypeFromComponentAnnotation(
       PsiAnnotation componentAnnotation,
       String tagName) {
