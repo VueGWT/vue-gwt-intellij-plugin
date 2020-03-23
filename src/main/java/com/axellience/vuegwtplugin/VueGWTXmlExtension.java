@@ -1,10 +1,11 @@
 package com.axellience.vuegwtplugin;
 
+import com.axellience.vuegwtplugin.codeinsight.tags.VueGWTElementDescriptor;
 import com.axellience.vuegwtplugin.language.htmltemplate.HtmlTemplateLanguage;
-import com.axellience.vuegwtplugin.util.VueGWTComponentAnnotationUtil;
 import com.axellience.vuegwtplugin.util.VueGWTPluginUtil;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.impl.source.xml.SchemaPrefix;
 import com.intellij.psi.impl.source.xml.TagNameReference;
@@ -12,6 +13,7 @@ import com.intellij.psi.xml.XmlAttribute;
 import com.intellij.psi.xml.XmlDocument;
 import com.intellij.psi.xml.XmlTag;
 import com.intellij.xml.HtmlXmlExtension;
+import com.intellij.xml.XmlElementDescriptor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -68,22 +70,23 @@ public class VueGWTXmlExtension extends HtmlXmlExtension {
   @Nullable
   @Override
   public TagNameReference createTagNameReference(ASTNode astNode, boolean b) {
-    String tagName = astNode.getText(); // Tag name of the current element
+    PsiElement psiElement = astNode.getTreeParent().getPsi();
+    if (!(psiElement instanceof XmlTag)) {
+      return super.createTagNameReference(astNode, b);
+    }
 
-    PsiFile templateFile = astNode.getTreeParent().getPsi().getContainingFile();
-    return
-        VueGWTPluginUtil
-            .findJavaFromTemplate(templateFile)
-            .flatMap(VueGWTComponentAnnotationUtil::getComponentAnnotationFromJavaFile)
-            .flatMap(
-                annotation -> VueGWTComponentAnnotationUtil
-                    .getImportedComponentTemplateFromAnnotationComponent(annotation, tagName)
-            )
-            .map(
-                componentTemplate ->
-                    (TagNameReference) new VueGWTTagNameReference(astNode, componentTemplate, b)
-            )
-            .orElse(super.createTagNameReference(astNode, b));
+    XmlElementDescriptor descriptor = ((XmlTag) psiElement).getDescriptor();
+    if (!(descriptor instanceof VueGWTElementDescriptor)) {
+      return super.createTagNameReference(astNode, b);
+    }
+
+    return ((VueGWTElementDescriptor) descriptor)
+        .getHtmlTemplate()
+        .map(
+            componentTemplate ->
+                (TagNameReference) new VueGWTTagNameReference(astNode, componentTemplate, b)
+        )
+        .orElse(super.createTagNameReference(astNode, b));
   }
 
   @Override

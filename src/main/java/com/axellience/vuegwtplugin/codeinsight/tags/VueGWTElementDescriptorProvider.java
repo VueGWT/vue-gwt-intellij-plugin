@@ -21,7 +21,8 @@ import kotlin.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class VueGWTTagProvider implements XmlElementDescriptorProvider, XmlTagNameProvider {
+public class VueGWTElementDescriptorProvider implements XmlElementDescriptorProvider,
+    XmlTagNameProvider {
 
   @Nullable
   @Override

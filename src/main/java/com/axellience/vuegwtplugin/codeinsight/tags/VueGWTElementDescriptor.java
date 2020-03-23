@@ -4,6 +4,7 @@ import com.axellience.vuegwtplugin.codeinsight.attributes.VueGWTAttributeDescrip
 import com.axellience.vuegwtplugin.util.VueGWTPluginUtil;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
 import com.intellij.psi.impl.source.html.dtd.HtmlNSDescriptorImpl;
 import com.intellij.psi.impl.source.xml.XmlDescriptorUtil;
 import com.intellij.psi.xml.XmlAttribute;
@@ -15,6 +16,7 @@ import com.intellij.xml.XmlNSDescriptor;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.jetbrains.annotations.Nullable;
 
@@ -56,10 +58,14 @@ public class VueGWTElementDescriptor implements XmlElementDescriptor {
     return getAttributeDescriptor(attribute.getName(), attribute.getParent());
   }
 
-  public List<XmlAttributeDescriptor> getProps() {
+  public List<VueGWTAttributeDescriptor> getProps() {
     return Arrays.stream(componentClass.getAllFields())
         .map(VueGWTAttributeDescriptor::new)
         .collect(Collectors.toList());
+  }
+
+  public Optional<PsiFile> getHtmlTemplate() {
+    return VueGWTPluginUtil.findHtmlTemplate(componentClass.getContainingFile());
   }
 
   @Override
@@ -93,7 +99,7 @@ public class VueGWTElementDescriptor implements XmlElementDescriptor {
     if (context instanceof XmlTag) {
       return ((XmlTag) context).getName();
     }
-    ;
+
     return this.getName();
   }
 

@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>com.axellience.vuegwt</id>
   <name>Vue GWT</name>
-  <version>0.1.0</version>
+  <version>0.2.0</version>
   <vendor email="support@axellience.com" url="http://www.genmymodel.com">Axellience</vendor>
 
   <description><![CDATA[
@@ -13,6 +13,7 @@
     <ul>
       <li>Run the Annotation Processor when a template or a component class is changed</li>
       <li>Allow navigation between components in the template</li>
+      <li>Add @Prop names completion in templates and allow navigation to Java definition</li>
       <li>Allow 2-way navigation between the template and the Java class</li>
       <li>Allow one intention to create the template for a Vue Component class</li>
       <li>Add support for scoped SCSS in templates</li>
@@ -21,6 +22,16 @@
     ]]></description>
 
   <change-notes><![CDATA[
+  <strong>v0.2.0</strong>
+  <ul>
+    <li>Change template recompiling handling to run the Java compiler instead of just touching the Java file</li>
+    <li>Add support for @Prop completion in templates</li>
+    <li>Add support for @Prop navigation in templates</li>
+    <li>Suppress unknown property for @Prop in templates</li>
+    <li>Add support for component name completion in templates based on imports</li>
+    <li>Suppress self closing tag warning in templates</li>
+  </ul>
+  <br/>
   <strong>v0.1.0</strong>
   <p>To upgrade to this version it is recommended to disable IntelliJ auto compilation feature as it is not needed anymore</p>
   <ul>
@@ -74,8 +85,10 @@
 
 
     <xml.xmlExtension implementation="com.axellience.vuegwtplugin.VueGWTXmlExtension"/>
-    <xml.tagNameProvider implementation="com.axellience.vuegwtplugin.codeinsight.tags.VueGWTTagProvider"/>
-    <xml.elementDescriptorProvider implementation="com.axellience.vuegwtplugin.codeinsight.tags.VueGWTTagProvider"/>
+    <xml.tagNameProvider
+      implementation="com.axellience.vuegwtplugin.codeinsight.tags.VueGWTElementDescriptorProvider"/>
+    <xml.elementDescriptorProvider
+      implementation="com.axellience.vuegwtplugin.codeinsight.tags.VueGWTElementDescriptorProvider"/>
 
     <fileTypeFactory
       implementation="com.axellience.vuegwtplugin.language.VueGWTFileTypeFactory"/>
