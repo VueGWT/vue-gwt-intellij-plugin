@@ -102,6 +102,9 @@
     <lang.syntaxHighlighterFactory language="VueGWT-Template"
       implementationClass="com.axellience.vuegwtplugin.language.htmltemplate.HtmlTemplateHighlightingLexerFactory"/>
 
+    <xml.attributeDescriptorsProvider
+      implementation="com.axellience.vuegwtplugin.codeinsight.attributes.VueGWTAttributeDescriptorProvider"/>
+
     <completion.contributor
       language="any"
       id="VueGWTCompletionContributor"

@@ -12,6 +12,7 @@ import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiJavaFile;
 import com.intellij.psi.PsiManager;
+import com.intellij.psi.xml.XmlTag;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -27,6 +28,12 @@ public class VueGWTPluginUtil {
 
   private VueGWTPluginUtil() {
 
+  }
+
+  public static boolean isVueContext(XmlTag context) {
+    return findJavaFromTemplate(context.getContainingFile().getOriginalFile())
+        .flatMap(VueGWTComponentAnnotationUtil::getComponentAnnotationFromJavaFile)
+        .isPresent();
   }
 
   public static Optional<PsiFile> findHtmlTemplate(PsiFile javaFile) {

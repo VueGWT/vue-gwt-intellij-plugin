@@ -1,4 +1,6 @@
 buildscript {
+    ext.kotlin_version = '1.3.41'
+
     repositories {
         maven {
             url "https://plugins.gradle.org/m2/"
@@ -8,12 +10,26 @@ buildscript {
         }
         mavenCentral()
     }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
 }
 
 plugins {
     id "org.jetbrains.intellij" version "0.4.10"
 }
 
+// Kotlin compatibility
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile) {
+    kotlinOptions {
+        jvmTarget = "1.8"
+        languageVersion = "1.3"
+        apiVersion = "1.3"
+    }
+}
+
+apply plugin: "kotlin"
 apply plugin: 'org.jetbrains.intellij'
 
 intellij {
@@ -29,4 +45,15 @@ version '0.2.0'
 
 repositories {
     mavenCentral()
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile "org.jetbrains:annotations-java5:17.0.0"
 }
