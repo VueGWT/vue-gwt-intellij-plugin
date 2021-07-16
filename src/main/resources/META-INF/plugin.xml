@@ -106,12 +106,7 @@
       language="any"
       id="VueGWTCompletionContributor"
       implementationClass="com.axellience.vuegwtplugin.codeinsight.attributes.VueGWTCompletionContributor"/>
-  </extensions>
 
-  <project-components>
-    <component>
-      <implementation-class>com.axellience.vuegwtplugin.VueGWTApplicationComponent
-      </implementation-class>
-    </component>
-  </project-components>
+    <fileDocumentManagerListener implementation="com.axellience.vuegwtplugin.VueGWTFileWatcher" />
+  </extensions>
 </idea-plugin>
