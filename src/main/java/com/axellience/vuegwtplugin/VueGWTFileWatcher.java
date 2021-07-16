@@ -1,5 +1,6 @@
 package com.axellience.vuegwtplugin;
 
+import java.util.Arrays;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import com.intellij.openapi.application.ApplicationManager;
@@ -9,6 +10,7 @@ import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.fileEditor.FileDocumentManagerListener;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.roots.ProjectFileIndex;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -20,8 +22,10 @@ public class VueGWTFileWatcher implements FileDocumentManagerListener {
   private static final Logger LOGGER = Logger.getInstance(VueGWTFileWatcher.class);
   private final Project project;
 
-  VueGWTFileWatcher(Project project) {
-    this.project = project;
+  VueGWTFileWatcher() {
+    this.project = Arrays.stream(ProjectManager.getInstance().getOpenProjects())
+        .findFirst()
+        .orElseThrow(RuntimeException::new);
   }
 
   @Override
@@ -71,7 +75,7 @@ public class VueGWTFileWatcher implements FileDocumentManagerListener {
       CompilerManager compilerManager = CompilerManager.getInstance(project);
       if (!compilerManager.isCompilationActive()
           && !compilerManager.isExcludedFromCompilation(javaComponent)) {
-        compilerManager.compile(new VirtualFile[]{javaComponent, htmlTemplate}, null);
+        compilerManager.compile(new VirtualFile[] {javaComponent, htmlTemplate}, null);
       }
     } catch (Exception e) {
       LOGGER.error(e.getMessage(), e);
