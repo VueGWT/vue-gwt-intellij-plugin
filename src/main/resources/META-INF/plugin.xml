@@ -90,8 +90,8 @@
     <xml.elementDescriptorProvider
       implementation="com.axellience.vuegwtplugin.codeinsight.tags.VueGWTElementDescriptorProvider"/>
 
-    <fileTypeFactory
-      implementation="com.axellience.vuegwtplugin.language.VueGWTFileTypeFactory"/>
+    <fileType name="VueGWT" implementationClass="com.axellience.vuegwtplugin.language.htmltemplate.HtmlTemplateFileType"
+              fieldName="INSTANCE" language="VueGWT-Template" extensions=""/>
 
     <lang.parserDefinition language="VueGWT-Template"
       implementationClass="com.axellience.vuegwtplugin.language.htmltemplate.HtmlTemplateParserDefinition"/>
