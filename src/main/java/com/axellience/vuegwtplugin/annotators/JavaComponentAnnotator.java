@@ -6,6 +6,7 @@ import static com.axellience.vuegwtplugin.util.VueGWTPluginUtil.findHtmlTemplate
 import com.axellience.vuegwtplugin.intentions.CreateTemplateIntention;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.Annotator;
+import com.intellij.lang.annotation.HighlightSeverity;
 import com.intellij.psi.PsiAnnotation;
 import com.intellij.psi.PsiAnnotationParameterList;
 import com.intellij.psi.PsiElement;
@@ -33,15 +34,15 @@ public class JavaComponentAnnotator implements Annotator {
     }
 
     PsiFile javaFile = psiAnnotation.getContainingFile();
-    if (!findHtmlTemplate(javaFile).isPresent()) {
-      addCreateTemplateIntention(psiAnnotation, annotationHolder);
+    if (findHtmlTemplate(javaFile).isEmpty()) {
+      addCreateTemplateIntention(annotationHolder);
     }
   }
 
-  private void addCreateTemplateIntention(PsiElement psiElement,
-      AnnotationHolder annotationHolder) {
-    annotationHolder.createErrorAnnotation(psiElement, "Unresolved HTML Template")
-        .registerFix(new CreateTemplateIntention());
+  private void addCreateTemplateIntention(AnnotationHolder annotationHolder) {
+    annotationHolder.newAnnotation(HighlightSeverity.ERROR, "Unresolved HTML Template")
+        .withFix(new CreateTemplateIntention())
+        .create();
   }
 
   private boolean shouldHaveTemplate(PsiAnnotation psiAnnotation) {

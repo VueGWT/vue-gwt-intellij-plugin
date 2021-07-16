@@ -1,10 +1,12 @@
 package com.axellience.vuegwtplugin;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.compiler.CompilerManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.fileEditor.FileDocumentManagerAdapter;
+import com.intellij.openapi.fileEditor.FileDocumentManagerListener;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ProjectFileIndex;
@@ -12,10 +14,8 @@ import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-public class VueGWTFileWatcher extends FileDocumentManagerAdapter {
+public class VueGWTFileWatcher implements FileDocumentManagerListener {
 
   private static final Logger LOGGER = Logger.getInstance(VueGWTFileWatcher.class);
   private final Project project;
@@ -85,10 +85,6 @@ public class VueGWTFileWatcher extends FileDocumentManagerAdapter {
       return null;
     }
 
-    VirtualFile siblingFile = parent.findChild(siblingName);
-    if (siblingFile == null) {
-      return null;
-    }
-    return siblingFile;
+    return parent.findChild(siblingName);
   }
 }
