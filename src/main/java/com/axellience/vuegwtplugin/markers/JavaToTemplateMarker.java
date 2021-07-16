@@ -18,7 +18,7 @@ public class JavaToTemplateMarker extends RelatedItemLineMarkerProvider {
 
   @Override
   protected void collectNavigationMarkers(@NotNull PsiElement element,
-      @NotNull Collection<? super RelatedItemLineMarkerInfo> result) {
+      @NotNull Collection<? super RelatedItemLineMarkerInfo<?>> result) {
     if (!(element instanceof PsiAnnotation)) {
       return;
     }
