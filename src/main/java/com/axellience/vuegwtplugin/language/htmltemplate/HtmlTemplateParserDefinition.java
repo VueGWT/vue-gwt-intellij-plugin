@@ -1,6 +1,7 @@
 package com.axellience.vuegwtplugin.language.htmltemplate;
 
 import com.intellij.lang.html.HTMLParserDefinition;
+import com.intellij.lexer.HtmlLexer;
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.FileViewProvider;
@@ -13,22 +14,20 @@ import org.jetbrains.annotations.NotNull;
 
 public class HtmlTemplateParserDefinition extends HTMLParserDefinition {
 
-  private static final IFileElementType HTML_FILE =
-      new IStubFileElementType<PsiFileStub<HtmlFileImpl>>(HtmlTemplateLanguage.INSTANCE);
+  private static final IFileElementType HTML_FILE = new IStubFileElementType<PsiFileStub<HtmlFileImpl>>(HtmlTemplateLanguage.INSTANCE);
 
-  @Override
+  @NotNull @Override
   public IFileElementType getFileNodeType() {
     return HTML_FILE;
   }
 
-  @Override
-  public PsiFile createFile(FileViewProvider fileViewProvider) {
+  @NotNull @Override
+  public PsiFile createFile(@NotNull FileViewProvider fileViewProvider) {
     return new HtmlFileImpl(fileViewProvider, HTML_FILE);
   }
 
-  @NotNull
-  @Override
+  @NotNull @Override
   public Lexer createLexer(Project project) {
-    return new HtmlTemplateLexer();
+    return new HtmlLexer();
   }
 }

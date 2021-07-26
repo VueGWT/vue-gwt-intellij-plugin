@@ -93,14 +93,17 @@
     <fileType name="VueGWT" implementationClass="com.axellience.vuegwtplugin.language.htmltemplate.HtmlTemplateFileType"
               fieldName="INSTANCE" language="VueGWT-Template" extensions=""/>
 
+    <html.embeddedContentSupport
+            implementation="com.axellience.vuegwtplugin.language.htmltemplate.HtmlTemplateEmbeddedContentSupport" />
+
     <lang.parserDefinition language="VueGWT-Template"
-      implementationClass="com.axellience.vuegwtplugin.language.htmltemplate.HtmlTemplateParserDefinition"/>
+                           implementationClass="com.axellience.vuegwtplugin.language.htmltemplate.HtmlTemplateParserDefinition"/>
+
+    <lang.syntaxHighlighterFactory language="VueGWT-Template"
+                                   implementationClass="com.intellij.lang.html.HtmlSyntaxHighlighterFactory"/>
 
     <annotator language="JAVA"
       implementationClass="com.axellience.vuegwtplugin.annotators.JavaComponentAnnotator"/>
-
-    <lang.syntaxHighlighterFactory language="VueGWT-Template"
-      implementationClass="com.axellience.vuegwtplugin.language.htmltemplate.HtmlTemplateHighlightingLexerFactory"/>
 
     <completion.contributor
       language="any"
