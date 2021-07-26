@@ -39,7 +39,7 @@ public class JavaToTemplateMarker extends RelatedItemLineMarkerProvider {
       PsiFile templateFile) {
     result.add(NavigationGutterIconBuilder.create(VueGWTIcons.VUE)
         .setTarget(templateFile)
-        .setTooltipText(VueGWTBundle.message("navigatemarker.tooltip"))
+        .setTooltipText(VueGWTBundle.message("navigatemarker.tohtml.tooltip"))
         .createLineMarkerInfo(element));
   }
 }
