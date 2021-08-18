@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>com.axellience.vuegwt</id>
   <name>Vue GWT</name>
-  <version>0.2.0</version>
+  <version>0.3.0</version>
   <vendor email="support@axellience.com" url="http://www.genmymodel.com">Axellience</vendor>
 
   <description><![CDATA[
@@ -57,15 +57,9 @@
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
   <idea-version since-build="162"/>
 
-  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
-     on how to target different products -->
-  <!-- uncomment to enable plugin in all products
+  <depends>com.intellij.java</depends>
+  <depends>com.intellij.modules.java</depends>
   <depends>com.intellij.modules.lang</depends>
-  -->
-
-  <!--<extensions defaultExtensionNs="com.intellij">
-    <multiHostInjector implementation="com.axellience.vuegwtplugin.VueCustomInjector"/>
-  </extensions>-->
 
 
   <actions>
