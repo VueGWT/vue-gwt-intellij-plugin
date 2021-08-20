@@ -1,7 +1,7 @@
 package com.axellience.vuegwtplugin;
 
 import com.axellience.vuegwtplugin.codeinsight.tags.VueGWTElementDescriptor;
-import com.axellience.vuegwtplugin.language.htmltemplate.VueGWTTemplateLanguage;
+import com.axellience.vuegwtplugin.language.VueGWTTemplateLanguage;
 import com.axellience.vuegwtplugin.util.VueGWTPluginUtil;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;

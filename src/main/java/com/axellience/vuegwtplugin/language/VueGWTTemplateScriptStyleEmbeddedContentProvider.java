@@ -1,4 +1,4 @@
-package com.axellience.vuegwtplugin.language.htmltemplate;
+package com.axellience.vuegwtplugin.language;
 
 import org.jetbrains.annotations.NotNull;
 import com.intellij.lang.Language;

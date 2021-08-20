@@ -1,4 +1,4 @@
-package com.axellience.vuegwtplugin.language.htmltemplate;
+package com.axellience.vuegwtplugin.language;
 
 import com.axellience.vuegwtplugin.VueGWTIcons;
 import com.intellij.openapi.fileTypes.LanguageFileType;
