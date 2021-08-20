@@ -1,8 +1,11 @@
 package com.axellience.vuegwtplugin;
 
-import java.util.Arrays;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.concurrency.Promise;
+
+import com.intellij.ide.DataManager;
+import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.compiler.CompilerManager;
 import com.intellij.openapi.diagnostic.Logger;
@@ -10,7 +13,6 @@ import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.fileEditor.FileDocumentManagerListener;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.roots.ProjectFileIndex;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -20,22 +22,17 @@ import com.intellij.psi.PsiFile;
 public class VueGWTFileWatcher implements FileDocumentManagerListener {
 
   private static final Logger LOGGER = Logger.getInstance(VueGWTFileWatcher.class);
-  private final Project project;
-
-  VueGWTFileWatcher() {
-    this.project = Arrays.stream(ProjectManager.getInstance().getOpenProjects())
-        .findFirst()
-        .orElseThrow(RuntimeException::new);
-  }
 
   @Override
   public void beforeDocumentSaving(@NotNull Document document) {
-    PsiFile psiFile = PsiDocumentManager.getInstance(project).getPsiFile(document);
-    if (psiFile == null) {
-      return;
-    }
+    getProjectAsync().onSuccess(project -> {
+      PsiFile psiFile = PsiDocumentManager.getInstance(project).getPsiFile(document);
+      if (psiFile == null) {
+        return;
+      }
 
-    processFile(psiFile.getVirtualFile());
+      processFile(psiFile.getVirtualFile());
+    });
   }
 
   private void processFile(VirtualFile changedFile) {
@@ -64,9 +61,8 @@ public class VueGWTFileWatcher implements FileDocumentManagerListener {
   }
 
   private void compileComponent(VirtualFile javaComponent, VirtualFile htmlTemplate) {
-    try {
-      ProjectFileIndex projectFileIndex =
-          ProjectRootManager.getInstance(project).getFileIndex();
+    getProjectAsync().onSuccess(project -> {
+      ProjectFileIndex projectFileIndex = ProjectRootManager.getInstance(project).getFileIndex();
       final Module module = projectFileIndex.getModuleForFile(javaComponent);
       if (module == null) {
         return;
@@ -77,9 +73,7 @@ public class VueGWTFileWatcher implements FileDocumentManagerListener {
           && !compilerManager.isExcludedFromCompilation(javaComponent)) {
         compilerManager.compile(new VirtualFile[] {javaComponent, htmlTemplate}, null);
       }
-    } catch (Exception e) {
-      LOGGER.error(e.getMessage(), e);
-    }
+    });
   }
 
   @Nullable
@@ -90,5 +84,11 @@ public class VueGWTFileWatcher implements FileDocumentManagerListener {
     }
 
     return parent.findChild(siblingName);
+  }
+
+  private Promise<Project> getProjectAsync() {
+    return DataManager.getInstance().getDataContextFromFocusAsync()
+        .then(CommonDataKeys.PROJECT::getData)
+        .onError(throwable -> LOGGER.warn("Unable to get project from focus", throwable));
   }
 }
