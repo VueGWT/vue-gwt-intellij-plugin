@@ -1,4 +1,4 @@
-package com.axellience.vuegwtplugin.language.htmltemplate;
+package com.axellience.vuegwtplugin.language;
 
 import com.intellij.lang.html.HTMLLanguage;
 import com.intellij.lang.xml.XMLLanguage;

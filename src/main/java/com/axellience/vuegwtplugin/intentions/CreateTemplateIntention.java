@@ -3,7 +3,7 @@ package com.axellience.vuegwtplugin.intentions;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nls.Capitalization;
 import org.jetbrains.annotations.NotNull;
-import com.axellience.vuegwtplugin.language.htmltemplate.VueGWTTemplateFileType;
+import com.axellience.vuegwtplugin.language.VueGWTTemplateFileType;
 import com.axellience.vuegwtplugin.util.VueGWTPluginUtil;
 import com.intellij.codeInsight.intention.impl.BaseIntentionAction;
 import com.intellij.openapi.application.ApplicationManager;
