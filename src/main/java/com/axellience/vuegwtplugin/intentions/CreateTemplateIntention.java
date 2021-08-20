@@ -3,7 +3,7 @@ package com.axellience.vuegwtplugin.intentions;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nls.Capitalization;
 import org.jetbrains.annotations.NotNull;
-import com.axellience.vuegwtplugin.language.htmltemplate.HtmlTemplateFileType;
+import com.axellience.vuegwtplugin.language.htmltemplate.VueGWTTemplateFileType;
 import com.axellience.vuegwtplugin.util.VueGWTPluginUtil;
 import com.intellij.codeInsight.intention.impl.BaseIntentionAction;
 import com.intellij.openapi.application.ApplicationManager;
@@ -44,7 +44,7 @@ public class CreateTemplateIntention extends BaseIntentionAction {
   private void createTemplate(Project project, PsiFile javaFile) {
     String templateName = VueGWTPluginUtil.getTemplateNameFrom(javaFile);
     PsiFile htmlFile = PsiFileFactory.getInstance(project).
-        createFileFromText(templateName, HtmlTemplateFileType.INSTANCE, "<div></div>");
+        createFileFromText(templateName, VueGWTTemplateFileType.INSTANCE, "<div></div>");
 
     WriteCommandAction.runWriteCommandAction(project,
         "Create HTML VueGwt Template '" + templateName + "'",

@@ -3,11 +3,11 @@ package com.axellience.vuegwtplugin.language.htmltemplate;
 import com.intellij.lang.html.HTMLLanguage;
 import com.intellij.lang.xml.XMLLanguage;
 
-public class HtmlTemplateLanguage extends XMLLanguage
+public class VueGWTTemplateLanguage extends XMLLanguage
 {
-    public static HtmlTemplateLanguage INSTANCE = new HtmlTemplateLanguage();
+    public static VueGWTTemplateLanguage INSTANCE = new VueGWTTemplateLanguage();
 
-    HtmlTemplateLanguage()
+    VueGWTTemplateLanguage()
     {
         super(HTMLLanguage.INSTANCE, "VueGWT-Template");
     }

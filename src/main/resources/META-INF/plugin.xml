@@ -84,14 +84,14 @@
     <xml.elementDescriptorProvider
       implementation="com.axellience.vuegwtplugin.codeinsight.tags.VueGWTElementDescriptorProvider"/>
 
-    <fileType name="VueGWT" implementationClass="com.axellience.vuegwtplugin.language.htmltemplate.HtmlTemplateFileType"
+    <fileType name="VueGWT" implementationClass="com.axellience.vuegwtplugin.language.htmltemplate.VueGWTTemplateFileType"
               fieldName="INSTANCE" language="VueGWT-Template" extensions=""/>
 
     <html.embeddedContentSupport
-            implementation="com.axellience.vuegwtplugin.language.htmltemplate.HtmlTemplateEmbeddedContentSupport" />
+            implementation="com.axellience.vuegwtplugin.language.htmltemplate.VuegGWTTemplateEmbeddedContentSupport" />
 
     <lang.parserDefinition language="VueGWT-Template"
-                           implementationClass="com.axellience.vuegwtplugin.language.htmltemplate.HtmlTemplateParserDefinition"/>
+                           implementationClass="com.axellience.vuegwtplugin.language.htmltemplate.VueGWTTemplateParserDefinition"/>
 
     <lang.syntaxHighlighterFactory language="VueGWT-Template"
                                    implementationClass="com.intellij.lang.html.HtmlSyntaxHighlighterFactory"/>
