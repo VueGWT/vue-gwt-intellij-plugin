@@ -1,7 +1,7 @@
 package com.axellience.vuegwtplugin;
 
 import com.axellience.vuegwtplugin.codeinsight.tags.VueGWTElementDescriptor;
-import com.axellience.vuegwtplugin.language.htmltemplate.HtmlTemplateLanguage;
+import com.axellience.vuegwtplugin.language.htmltemplate.VueGWTTemplateLanguage;
 import com.axellience.vuegwtplugin.util.VueGWTPluginUtil;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;
@@ -21,7 +21,7 @@ public class VueGWTXmlExtension extends HtmlXmlExtension {
 
   @Override
   public boolean isAvailable(PsiFile psiFile) {
-    if (psiFile.getLanguage() != HtmlTemplateLanguage.INSTANCE) {
+    if (psiFile.getLanguage() != VueGWTTemplateLanguage.INSTANCE) {
       return false;
     }
 

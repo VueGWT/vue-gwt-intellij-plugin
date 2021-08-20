@@ -12,9 +12,9 @@ import com.intellij.psi.tree.IFileElementType;
 import com.intellij.psi.tree.IStubFileElementType;
 import org.jetbrains.annotations.NotNull;
 
-public class HtmlTemplateParserDefinition extends HTMLParserDefinition {
+public class VueGWTTemplateParserDefinition extends HTMLParserDefinition {
 
-  private static final IFileElementType HTML_FILE = new IStubFileElementType<PsiFileStub<HtmlFileImpl>>(HtmlTemplateLanguage.INSTANCE);
+  private static final IFileElementType HTML_FILE = new IStubFileElementType<PsiFileStub<HtmlFileImpl>>(VueGWTTemplateLanguage.INSTANCE);
 
   @NotNull @Override
   public IFileElementType getFileNodeType() {

@@ -9,13 +9,13 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
-public class HtmlTemplateFileType extends LanguageFileType implements FileTypeIdentifiableByVirtualFile
+public class VueGWTTemplateFileType extends LanguageFileType implements FileTypeIdentifiableByVirtualFile
 {
-    public static final HtmlTemplateFileType INSTANCE = new HtmlTemplateFileType();
+    public static final VueGWTTemplateFileType INSTANCE = new VueGWTTemplateFileType();
 
-    HtmlTemplateFileType()
+    VueGWTTemplateFileType()
     {
-        super(HtmlTemplateLanguage.INSTANCE);
+        super(VueGWTTemplateLanguage.INSTANCE);
     }
 
     @Override

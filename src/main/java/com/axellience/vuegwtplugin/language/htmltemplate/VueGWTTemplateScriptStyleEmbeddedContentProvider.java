@@ -5,9 +5,9 @@ import com.intellij.lang.Language;
 import com.intellij.lexer.BaseHtmlLexer;
 import com.intellij.lexer.HtmlScriptStyleEmbeddedContentProvider;
 
-public class HtmlVueGWTTemplateScriptStyleEmbeddedContentProvider extends HtmlScriptStyleEmbeddedContentProvider {
+public class VueGWTTemplateScriptStyleEmbeddedContentProvider extends HtmlScriptStyleEmbeddedContentProvider {
 
-  public HtmlVueGWTTemplateScriptStyleEmbeddedContentProvider(@NotNull BaseHtmlLexer lexer) {
+  public VueGWTTemplateScriptStyleEmbeddedContentProvider(@NotNull BaseHtmlLexer lexer) {
     super(lexer);
   }
 
