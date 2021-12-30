@@ -1,5 +1,9 @@
 package com.axellience.vuegwtplugin;
 
+import com.intellij.openapi.compiler.CompilerPaths;
+import com.intellij.openapi.compiler.ex.CompilerPathsEx;
+import com.intellij.openapi.vfs.VfsUtil;
+import com.intellij.openapi.vfs.VirtualFileManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.concurrency.Promise;
@@ -18,6 +22,11 @@ import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 
 public class VueGWTFileWatcher implements FileDocumentManagerListener {
 
@@ -67,11 +76,27 @@ public class VueGWTFileWatcher implements FileDocumentManagerListener {
       if (module == null) {
         return;
       }
+      var sourceRoot = projectFileIndex.getSourceRootForFile(javaComponent);
+      if(sourceRoot == null)
+        return;
+
+      var htmlPath = htmlTemplate.getPath();
+      var relativeHtmlPath = htmlPath.substring(sourceRoot.getPath().length());
+      var outputs = CompilerPaths.getOutputPaths(new Module[] { module });
+      if(outputs.length == 0)
+        return;
+
+      var targetPath = Path.of(outputs[0], relativeHtmlPath);
+      try {
+        Files.copy(Path.of(htmlPath), targetPath, StandardCopyOption.REPLACE_EXISTING);
+      } catch (IOException e) {
+        return;
+      }
 
       CompilerManager compilerManager = CompilerManager.getInstance(project);
       if (!compilerManager.isCompilationActive()
           && !compilerManager.isExcludedFromCompilation(javaComponent)) {
-        compilerManager.compile(new VirtualFile[] {javaComponent, htmlTemplate}, null);
+        compilerManager.compile(new VirtualFile[] {javaComponent}, null);
       }
     });
   }
