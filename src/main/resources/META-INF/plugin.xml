@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>com.axellience.vuegwt</id>
   <name>Vue GWT</name>
-  <version>0.2.1</version>
+  <version>0.2.2</version>
   <vendor email="support@axellience.com" url="http://www.genmymodel.com">Axellience</vendor>
 
   <description><![CDATA[
@@ -22,9 +22,17 @@
     ]]></description>
 
   <change-notes><![CDATA[
+  <strong>v0.2.2</strong>
+  <ul>
+    <li>Updated Gradle build</li>
+    <li>Copy HTML template to classpath on change</li>
+    <li>Contribution by <a href="https://github.com/thelsing">thelsing</a></li>
+  </ul>
+  <br/>
   <strong>v0.2.1</strong>
   <ul>
     <li>Upgraded for compatibility with IU-212+</li>
+    <li>Contribution by <a href="https://github.com/Gijsvanhorn">Gijsvanhorn</a></li>
   </ul>
   <br/>
   <strong>v0.2.0</strong>
